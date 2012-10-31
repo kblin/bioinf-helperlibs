@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
     name = "helperlibs",
-    version = "0.1.0",
+    version = "0.1.1",
     author = "Kai Blin",
     author_email = "kai.blin@biotech.uni-tuebingen.de",
     description = ("A collection of bioinformatics-related helper functions"),
