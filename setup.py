@@ -13,7 +13,7 @@ setup(
     license = "GPL",
     keywords = "bioinformatics",
     url = "https://github.com/kblin/bioinf-helperlibs/wiki",
-    packages=['helperlibs'],
+    packages=['helperlibs', 'helperlibs.bio', 'helperlibs.wrappers'],
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 3 - Alpha",
