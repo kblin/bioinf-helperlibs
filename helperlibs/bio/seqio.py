@@ -20,16 +20,26 @@
 from Bio import SeqIO
 from os import path
 
-def parse(handle):
+def _get_seqtype_from_ext(handle):
     dummy, ext = path.splitext(handle.name.lower())
-    if ext in (".gbk", ".gb", ".genbank"):
-        seq_iterator = SeqIO.parse(handle, "genbank")
-    elif ext in (".embl"):
-        seq_iterator = SeqIO.parse(handle, "embl")
+    if ext in (".gbk", ".gb", ".genbank", ".gbff"):
+        return "genbank"
+    elif ext in (".embl", ".emb"):
+        return "embl"
     elif ext in (".fa", ".fasta", ".fna", ".faa"):
-        seq_iterator = SeqIO.parse(handle, "fasta")
+        return "fasta"
     else:
-        handle.close()
         raise ValueError("Unknown file format '%s'." % ext)
 
-    return seq_iterator
+def parse(handle):
+    seqtype = _get_seqtype_from_ext(handle)
+    return SeqIO.parse(handle, seqtype)
+
+
+def read(handle):
+    seqtype = _get_seqtype_from_ext(handle)
+    return SeqIO.read(handle, seqtype)
+
+
+def write(*args, **kwargs):
+    SeqIO.write(*args, **kwargs)
