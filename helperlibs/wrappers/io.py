@@ -26,4 +26,6 @@ class TemporaryFile(object):
         return self
 
     def __exit__(self, type, value, traceback):
+        if hasattr(self.handle, "close"):
+            self.handle.close()
         os.unlink(self.name)
