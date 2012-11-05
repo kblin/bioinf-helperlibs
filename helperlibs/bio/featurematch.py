@@ -34,7 +34,7 @@ class FeatureMatch:
             self.promotor_region = seq[:ul]
             self.mrna = seq.transcribe()
 
-        self.aas = self.dna.translate()
+        self.aas = self.dna.translate(to_stop=True)
 
     def get_fasta_header(self):
         ret = ">"
