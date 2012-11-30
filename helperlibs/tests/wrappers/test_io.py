@@ -54,11 +54,18 @@ class TestTemporaryPipe(unittest2.TestCase):
 class TestTemporaryDirectory(unittest2.TestCase):
     def setUp(self):
         self.tt = TraceTracker()
+        self.cwd = '/old/cur/dir'
         mock("tempfile.mkdtemp", tracker=self.tt, returns="/fake/tmp/dir")
         mock("shutil.rmtree", tracker=self.tt)
+        mock("os.getcwd", tracker=self.tt, returns=self.cwd)
+        mock("os.chdir", tracker=self.tt, returns_func=self._fake_chdir)
 
     def tearDown(self):
         restore()
+
+    def _fake_chdir(self, newdir):
+        "Fake a chwd call"
+        self.cwd = newdir
 
     def test__init(self):
         "Test TemporaryDirectory object creation"
@@ -72,6 +79,7 @@ class TestTemporaryDirectory(unittest2.TestCase):
         tdir = TemporaryDirectory()
         d = tdir.__enter__()
         self.assertEqual(d, expected)
+        self.assertEqual(self.cwd, '/old/cur/dir')
         assert_same_trace(self.tt, trace)
 
     def test__exit(self):
@@ -81,6 +89,22 @@ class TestTemporaryDirectory(unittest2.TestCase):
         trace = """    Called tempfile.mkdtemp('', 'tmp', None)
     Called shutil.rmtree('/fake/tmp/dir')"""
         tdir.__exit__(None, None, None)
+        assert_same_trace(self.tt, trace)
+
+    def test_change_cwd(self):
+        "Test TemporaryDirectory changing the cwd"
+        expected = "/fake/tmp/dir"
+        trace = """    Called tempfile.mkdtemp('', 'tmp', None)
+    Called os.getcwd()
+    Called os.chdir('/fake/tmp/dir')
+    Called os.chdir('/old/cur/dir')
+    Called shutil.rmtree('/fake/tmp/dir')"""
+        tdir = TemporaryDirectory(change=True)
+        tdir.__enter__()
+        self.assertEqual(self.cwd, expected)
+        self.assertEqual(tdir.old_wd, '/old/cur/dir')
+        tdir.__exit__(None, None, None)
+        self.assertEqual(self.cwd, '/old/cur/dir')
         assert_same_trace(self.tt, trace)
 
 

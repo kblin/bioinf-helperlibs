@@ -18,13 +18,19 @@ class TemporaryFile(object):
 
 
 class TemporaryDirectory(object):
-    def __init__(self, suffix='', prefix='tmp', dir=None):
+    def __init__(self, suffix='', prefix='tmp', dir=None, change=False):
+        self.change = change
         self.tempdir = tempfile.mkdtemp(suffix, prefix, dir)
 
     def __enter__(self):
+        if self.change:
+            self.old_wd = os.getcwd()
+            os.chdir(self.tempdir)
         return self.tempdir
 
     def __exit__(self, type, value, traceback):
+        if self.change:
+            os.chdir(self.old_wd)
         shutil.rmtree(self.tempdir)
 
 
