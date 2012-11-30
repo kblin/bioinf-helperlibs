@@ -6,7 +6,7 @@ import os
 import tempfile
 import shutil
 from minimock import mock, restore, TraceTracker, assert_same_trace
-from helperlibs.wrappers.io import TemporaryPipe, TemporaryFile
+from helperlibs.wrappers.io import TemporaryPipe, TemporaryFile, TemporaryDirectory
 
 class TestTemporaryPipe(unittest2.TestCase):
     def test__init(self):
@@ -48,6 +48,39 @@ class TestTemporaryPipe(unittest2.TestCase):
         pipe.tempdir = "foo"
         trace = "    Called shutil.rmtree('foo')"
         pipe.__exit__(None, None, None)
+        assert_same_trace(self.tt, trace)
+
+
+class TestTemporaryDirectory(unittest2.TestCase):
+    def setUp(self):
+        self.tt = TraceTracker()
+        mock("tempfile.mkdtemp", tracker=self.tt, returns="/fake/tmp/dir")
+        mock("shutil.rmtree", tracker=self.tt)
+
+    def tearDown(self):
+        restore()
+
+    def test__init(self):
+        "Test TemporaryDirectory object creation"
+        tdir = TemporaryDirectory()
+        self.assertEqual(tdir.tempdir, '/fake/tmp/dir')
+
+    def test__enter(self):
+        "Test TemporaryDirectory __enter__() method"
+        expected = "/fake/tmp/dir"
+        trace = """    Called tempfile.mkdtemp('', 'tmp', None)"""
+        tdir = TemporaryDirectory()
+        d = tdir.__enter__()
+        self.assertEqual(d, expected)
+        assert_same_trace(self.tt, trace)
+
+    def test__exit(self):
+        "Test TemporaryDirectory __exit__() method"
+        tdir = TemporaryDirectory()
+
+        trace = """    Called tempfile.mkdtemp('', 'tmp', None)
+    Called shutil.rmtree('/fake/tmp/dir')"""
+        tdir.__exit__(None, None, None)
         assert_same_trace(self.tt, trace)
 
 

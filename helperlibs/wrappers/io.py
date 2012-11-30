@@ -16,6 +16,18 @@ class TemporaryFile(object):
             self.handle.close()
         os.unlink(self.name)
 
+
+class TemporaryDirectory(object):
+    def __init__(self, suffix='', prefix='tmp', dir=None):
+        self.tempdir = tempfile.mkdtemp(suffix, prefix, dir)
+
+    def __enter__(self):
+        return self.tempdir
+
+    def __exit__(self, type, value, traceback):
+        shutil.rmtree(self.tempdir)
+
+
 if sys.platform in ('linux2', 'darwin'):
     class TemporaryPipe(object):
         def __init__(self, pipename="pipe"):
