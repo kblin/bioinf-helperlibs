@@ -26,7 +26,7 @@ def _get_seqtype_from_ext(handle):
         return "genbank"
     elif ext in (".embl", ".emb"):
         return "embl"
-    elif ext in (".fa", ".fasta", ".fna", ".faa"):
+    elif ext in (".fa", ".fasta", ".fna", ".faa", ".fas"):
         return "fasta"
     else:
         raise ValueError("Unknown file format '%s'." % ext)

@@ -38,6 +38,7 @@ class TestSeqIO(unittest2.TestCase):
         fasta_h = DummyHandle("test.fasta")
         fna_h = DummyHandle("test.fna")
         faa_h = DummyHandle("test.faa")
+        fas_h = DummyHandle("test.fas")
         invalid_h = DummyHandle("test.invalid")
 
         for handle in (gbk_h, gb_h, genbank_h, gbff_h):
@@ -46,7 +47,7 @@ class TestSeqIO(unittest2.TestCase):
         for handle in (embl_h, emb_h):
             self.assertEqual("embl", seqio._get_seqtype_from_ext(handle))
 
-        for handle in (fa_h, fasta_h, fna_h, faa_h):
+        for handle in (fa_h, fasta_h, fna_h, faa_h, fas_h):
             self.assertEqual("fasta", seqio._get_seqtype_from_ext(handle))
 
         self.assertRaises(ValueError, seqio._get_seqtype_from_ext, invalid_h)
