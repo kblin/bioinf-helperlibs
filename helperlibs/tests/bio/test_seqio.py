@@ -27,7 +27,7 @@ class TestSeqIO(unittest2.TestCase):
 
 
     def test__get_seqtype_from_ext(self):
-        "Test guessing the sequence type from the file extension"
+        "Test guessing the sequence type from the file extension for handle input"
         gbk_h = DummyHandle("test.gbk")
         gb_h = DummyHandle("test.gb")
         genbank_h = DummyHandle("test.genbank")
@@ -51,6 +51,20 @@ class TestSeqIO(unittest2.TestCase):
             self.assertEqual("fasta", seqio._get_seqtype_from_ext(handle))
 
         self.assertRaises(ValueError, seqio._get_seqtype_from_ext, invalid_h)
+
+
+    def test__get_seqtype_from_ext_string(self):
+        "Test guessing the sequence type from the file extension for string input"
+        for string in ("test.gbk", "test.gb", "test.genbank", "test.gbff"):
+            self.assertEqual("genbank", seqio._get_seqtype_from_ext(string))
+
+        for string in ("test.embl", "test.emb"):
+            self.assertEqual("embl", seqio._get_seqtype_from_ext(string))
+
+        for string in ("test.fa", "test.fasta", "test.fna", "test.faa", "test.fas"):
+            self.assertEqual("fasta", seqio._get_seqtype_from_ext(string))
+
+        self.assertRaises(ValueError, seqio._get_seqtype_from_ext, "test.invalid")
 
 
     def test_parse(self):

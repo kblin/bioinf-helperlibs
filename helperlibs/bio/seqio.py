@@ -21,7 +21,13 @@ from Bio import SeqIO
 from os import path
 
 def _get_seqtype_from_ext(handle):
-    dummy, ext = path.splitext(handle.name.lower())
+    if isinstance(handle, basestring):
+        name = handle
+    elif hasattr(handle, 'name'):
+        name = handle.name
+    else:
+        raise ValueError("Unknown datatype for handle!")
+    dummy, ext = path.splitext(name.lower())
     if ext in (".gbk", ".gb", ".genbank", ".gbff"):
         return "genbank"
     elif ext in (".embl", ".emb"):
