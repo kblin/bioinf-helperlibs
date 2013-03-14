@@ -19,6 +19,10 @@
 
 from Bio import SeqIO
 from os import path
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 def _get_seqtype_from_ext(handle):
     if isinstance(handle, basestring):
@@ -36,6 +40,24 @@ def _get_seqtype_from_ext(handle):
         return "fasta"
     else:
         raise ValueError("Unknown file format '%s'." % ext)
+
+
+def _guess_seqtype_from_file(handle):
+    "Guess the sequence type from the file's contents"
+    if isinstance(handle, basestring):
+        handle = StringIO(handle)
+
+    for line in handle:
+        if not line.strip():
+            continue
+        if line.startswith('LOCUS'):
+            return 'genbank'
+        if line.startswith('ID'):
+            return 'embl'
+        if line.startswith('>'):
+            return 'fasta'
+
+    raise ValueError("Failed to guess format for input")
 
 def parse(handle):
     seqtype = _get_seqtype_from_ext(handle)

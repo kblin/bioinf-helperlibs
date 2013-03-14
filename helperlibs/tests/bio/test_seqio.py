@@ -4,6 +4,7 @@ except ImportError:
     import unittest as unittest2
 import Bio.SeqIO
 from helperlibs.bio import seqio
+from helperlibs.tests import get_file_path
 from minimock import TraceTracker, assert_same_trace, mock, restore
 
 
@@ -65,6 +66,29 @@ class TestSeqIO(unittest2.TestCase):
             self.assertEqual("fasta", seqio._get_seqtype_from_ext(string))
 
         self.assertRaises(ValueError, seqio._get_seqtype_from_ext, "test.invalid")
+
+
+    def test__guess_seqtype_from_file(self):
+        "Test gessing the sequence type from the file's content"
+        with open(get_file_path('melanin.gbk'), 'rU') as h:
+            self.assertEqual("genbank", seqio._guess_seqtype_from_file(h))
+            h.seek(0)
+            string_seq = h.read()
+            self.assertEqual("genbank", seqio._guess_seqtype_from_file(string_seq))
+
+        with open(get_file_path('melanin.embl'), 'rU') as h:
+            self.assertEqual("embl", seqio._guess_seqtype_from_file(h))
+            h.seek(0)
+            string_seq = h.read()
+            self.assertEqual("embl", seqio._guess_seqtype_from_file(string_seq))
+
+        with open(get_file_path('melanin.fasta'), 'rU') as h:
+            self.assertEqual("fasta", seqio._guess_seqtype_from_file(h))
+            h.seek(0)
+            string_seq = h.read()
+            self.assertEqual("fasta", seqio._guess_seqtype_from_file(string_seq))
+
+        self.assertRaises(ValueError, seqio._guess_seqtype_from_file, 'invalid')
 
 
     def test_parse(self):
