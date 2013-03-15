@@ -50,12 +50,23 @@ def _guess_seqtype_from_file(handle):
     for line in handle:
         if not line.strip():
             continue
-        if line.startswith('LOCUS'):
+        if line.lstrip().split()[0] in ('LOCUS', 'FEATURES', 'source', 'CDS',
+                                        'gene'):
             return 'genbank'
-        if line.startswith('ID'):
+        if len(line) > 2 and line[:3] in ('ID ', 'FT '):
             return 'embl'
         if line.startswith('>'):
             return 'fasta'
+    handle.seek(0)
+    import string
+    from Bio.Data import IUPACData as iupac
+    all_input_letters = set(handle.read().lower())
+    all_valid = set(string.digits)
+    all_valid.update(set(iupac.protein_letters.lower()))
+    all_valid.update(set(iupac.unambiguous_dna_letters.lower()))
+    all_valid.update(set('- \n'))
+    if all_valid.issuperset(all_input_letters):
+        return 'fasta'
 
     raise ValueError("Failed to guess format for input")
 
