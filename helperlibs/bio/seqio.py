@@ -117,6 +117,27 @@ def sanity_check_genbank(handle):
     return sanity_check_insdcio(handle, id_marker, fake_id_line)
 
 
+def sanity_check_fasta(handle):
+    """Sanity check FASTA files."""
+    header_found = False
+    for line in handle:
+        if line.startswith('>'):
+            header_found = True
+            break
+
+    handle.seek(0)
+
+    if header_found:
+        return handle
+
+    fake_header_line = ">DUMMY"
+    new_handle = StringIO()
+    new_handle.write("%s\n" % fake_header_line)
+    new_handle.write(handle.read())
+    new_handle.seek(0)
+    return new_handle
+
+
 def parse(handle, robust=False):
     seqtype = _get_seqtype_from_ext(handle)
     if robust:
@@ -124,6 +145,8 @@ def parse(handle, robust=False):
             handle = sanity_check_embl(handle)
         elif seqtype == "genbank":
             handle = sanity_check_genbank(handle)
+        elif seqtype == "fasta":
+            handle = sanity_check_fasta(handle)
 
     return SeqIO.parse(handle, seqtype)
 

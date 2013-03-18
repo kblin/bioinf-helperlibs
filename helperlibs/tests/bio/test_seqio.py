@@ -174,7 +174,7 @@ class TestSeqIORobust(unittest2.TestCase):
         self.assertEqual(1, len(records))
 
 
-    def test_parse_fasta(self):
+    def test_parse_fasta_valid(self):
         "Test parsing a valid fasta record"
         with open(get_file_path('melanin.fasta'), 'rU') as h:
             records = list(seqio.parse(h))
@@ -196,6 +196,18 @@ class TestSeqIORobust(unittest2.TestCase):
     def test_parse_embl_no_header(self):
         "Test parsing an embl record without header"
         with open(get_file_path('no_header.embl'), 'rU') as h:
+            # plain BioPython parsing should fail
+            records = list(seqio.parse(h))
+            self.assertEqual(0, len(records))
+            h.seek(0)
+            # robust parsing should work
+            records = list(seqio.parse(h, robust=True))
+            self.assertEqual(1, len(records))
+
+
+    def test_parse_fasta_no_header(self):
+        "Test parsing a fasta record without header"
+        with open(get_file_path('no_header.fasta'), 'rU') as h:
             # plain BioPython parsing should fail
             records = list(seqio.parse(h))
             self.assertEqual(0, len(records))
