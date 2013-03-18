@@ -70,8 +70,51 @@ def _guess_seqtype_from_file(handle):
 
     raise ValueError("Failed to guess format for input")
 
+
+def sanity_check_insdcio(handle, id_marker, fake_id_line):
+    """Sanity check for insdcio style files"""
+    found_id = False
+    found_end_marker = False
+    for line in handle:
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith(id_marker):
+            found_id = True
+            break
+        if line.startswith('//'):
+            found_end_marker = True
+            break
+
+    handle.seek(0)
+    # We found an ID, file looks good.
+    if found_id:
+        return handle
+
+    # If there's no ID and no end marker, just give up.
+    if not found_end_marker:
+        return handle
+
+    # If we found an end marker but no ID, fake one.
+    new_handle = StringIO()
+    new_handle.write("%s\n" % fake_id_line)
+    new_handle.write(handle.read())
+    new_handle.seek(0)
+    return new_handle
+
+
+def sanity_check_embl(handle):
+    """Sanity check EMBL format files"""
+    id_marker = 'ID '
+    fake_id_line = 'ID   DUMMY; SV 1; linear; DNA; STD; BCT; 1 BP.'
+    return sanity_check_insdcio(handle, id_marker, fake_id_line)
+
+
 def parse(handle, robust=False):
     seqtype = _get_seqtype_from_ext(handle)
+    if robust:
+        if seqtype == "embl":
+            handle = sanity_check_embl(handle)
     return SeqIO.parse(handle, seqtype)
 
 
