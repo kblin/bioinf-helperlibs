@@ -157,3 +157,25 @@ class TestSeqIODummy(unittest2.TestCase):
         expected_trace = "    Called Bio.SeqIO.write(['fake'], DummyHandle('test.gbk'), 'genbank')"
         seqio.write(['fake'], self.handle, "genbank")
         assert_same_trace(self.tt, expected_trace)
+
+
+class TestSeqIORobust(unittest2.TestCase):
+    def test_parse_genbank_valid(self):
+        "Test parsing a valid genbank record"
+        with open(get_file_path('melanin.gbk'), 'rU') as h:
+            records = list(seqio.parse(h))
+        self.assertEqual(1, len(records))
+
+
+    def test_parse_embl_valid(self):
+        "Test parsing a valid embl record"
+        with open(get_file_path('melanin.embl'), 'rU') as h:
+            records = list(seqio.parse(h))
+        self.assertEqual(1, len(records))
+
+
+    def test_parse_fasta(self):
+        "Test parsing a valid fasta record"
+        with open(get_file_path('melanin.fasta'), 'rU') as h:
+            records = list(seqio.parse(h))
+        self.assertEqual(1, len(records))
