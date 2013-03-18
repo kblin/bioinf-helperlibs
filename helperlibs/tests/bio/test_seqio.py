@@ -215,3 +215,57 @@ class TestSeqIORobust(unittest2.TestCase):
             # robust parsing should work
             records = list(seqio.parse(h, robust=True))
             self.assertEqual(1, len(records))
+
+
+    def test_read_genbank_valid(self):
+        "Test reading a valid genbank record"
+        with open(get_file_path('melanin.gbk'), 'rU') as h:
+            record = seqio.read(h)
+        self.assertEqual("AB070938.1", record.id)
+
+
+    def test_read_embl_valid(self):
+        "Test reading a valid embl record"
+        with open(get_file_path('melanin.embl'), 'rU') as h:
+            record = seqio.read(h)
+        self.assertEqual("AB070938.1", record.id)
+
+
+    def test_read_fasta_valid(self):
+        "Test reading a valid fasta record"
+        with open(get_file_path('melanin.fasta'), 'rU') as h:
+            record = seqio.read(h)
+        self.assertEqual("AB070938", record.id)
+
+
+    def test_read_genbank_no_header(self):
+        "Test reading a genbank record without header"
+        with open(get_file_path('no_header.gbk'), 'rU') as h:
+            # plain BioPython reading should fail
+            self.assertRaises(ValueError, seqio.read, h)
+            h.seek(0)
+            # robust reading should work
+            record = seqio.read(h, robust=True)
+            self.assertEqual("DUMMY", record.id)
+
+
+    def test_read_embl_no_header(self):
+        "Test reading an embl record without header"
+        with open(get_file_path('no_header.embl'), 'rU') as h:
+            # plain BioPython reading should fail
+            self.assertRaises(ValueError, seqio.read, h)
+            h.seek(0)
+            # robust reading should work
+            record = seqio.read(h, robust=True)
+            self.assertEqual("DUMMY.1", record.id)
+
+
+    def test_read_fasta_no_header(self):
+        "Test reading a fasta record without header"
+        with open(get_file_path('no_header.fasta'), 'rU') as h:
+            # plain BioPython reading should fail
+            self.assertRaises(ValueError, seqio.read, h)
+            h.seek(0)
+            # robust reading should work
+            record = seqio.read(h, robust=True)
+            self.assertEqual("DUMMY", record.id)

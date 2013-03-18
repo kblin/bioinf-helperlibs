@@ -153,6 +153,13 @@ def parse(handle, robust=False):
 
 def read(handle, robust=False):
     seqtype = _get_seqtype_from_ext(handle)
+    if robust:
+        if seqtype == "embl":
+            handle = sanity_check_embl(handle)
+        elif seqtype == "genbank":
+            handle = sanity_check_genbank(handle)
+        elif seqtype == "fasta":
+            handle = sanity_check_fasta(handle)
     return SeqIO.read(handle, seqtype)
 
 
