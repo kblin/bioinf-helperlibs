@@ -17,16 +17,7 @@ class DummyHandle(object):
         return "DummyHandle(%r)" % self.name
 
 
-class TestSeqIO(unittest2.TestCase):
-    def setUp(self):
-        self.tt = TraceTracker()
-        self.handle = DummyHandle("test.gbk")
-
-
-    def tearDown(self):
-        restore()
-
-
+class TestSeqIOSeqtype(unittest2.TestCase):
     def test__get_seqtype_from_ext(self):
         "Test guessing the sequence type from the file extension for handle input"
         gbk_h = DummyHandle("test.gbk")
@@ -134,7 +125,17 @@ class TestSeqIO(unittest2.TestCase):
         self.assertRaises(ValueError, seqio._guess_seqtype_from_file, 'bad & invalid')
 
 
-    def test_parse(self):
+class TestSeqIODummy(unittest2.TestCase):
+    def setUp(self):
+        self.tt = TraceTracker()
+        self.handle = DummyHandle("test.gbk")
+
+
+    def tearDown(self):
+        restore()
+
+
+    def test_parse_calls_biopython(self):
         "Test running the Bio.SeqIO parser"
         mock("Bio.SeqIO.parse", tracker=self.tt, returns=[])
         expected_trace = "    Called Bio.SeqIO.parse(DummyHandle('test.gbk'), 'genbank')"
@@ -142,7 +143,7 @@ class TestSeqIO(unittest2.TestCase):
         assert_same_trace(self.tt, expected_trace)
 
 
-    def test_read(self):
+    def test_read_calls_biopython(self):
         "Test reading a single sequence via Bio.SeqIO"
         mock("Bio.SeqIO.read", tracker=self.tt, returns=[])
         expected_trace = "    Called Bio.SeqIO.read(DummyHandle('test.gbk'), 'genbank')"
@@ -150,7 +151,7 @@ class TestSeqIO(unittest2.TestCase):
         assert_same_trace(self.tt, expected_trace)
 
 
-    def test_write(self):
+    def test_write_calls_biopython(self):
         "Test writing Bio.SeqIO records"
         mock("Bio.SeqIO.write", tracker=self.tt, returns=[])
         expected_trace = "    Called Bio.SeqIO.write(['fake'], DummyHandle('test.gbk'), 'genbank')"
