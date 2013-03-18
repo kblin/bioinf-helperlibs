@@ -19,6 +19,7 @@ setup(
     keywords = "bioinformatics",
     url = "https://github.com/kblin/bioinf-helperlibs/wiki",
     packages=['helperlibs', 'helperlibs.bio', 'helperlibs.wrappers', 'helperlibs.tests'],
+    install_requires=['BioPython>=1.61'],
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 3 - Alpha",
