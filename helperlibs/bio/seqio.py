@@ -70,12 +70,12 @@ def _guess_seqtype_from_file(handle):
 
     raise ValueError("Failed to guess format for input")
 
-def parse(handle):
+def parse(handle, robust=False):
     seqtype = _get_seqtype_from_ext(handle)
     return SeqIO.parse(handle, seqtype)
 
 
-def read(handle):
+def read(handle, robust=False):
     seqtype = _get_seqtype_from_ext(handle)
     return SeqIO.read(handle, seqtype)
 
