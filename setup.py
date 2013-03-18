@@ -4,9 +4,14 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+version = 'undefined'
+for line in open(os.path.join('helperlibs', '__init__.py'), 'r'):
+    if line.startswith('version'):
+        exec(line.strip())
+
 setup(
     name = "helperlibs",
-    version = "0.1.2",
+    version = version,
     author = "Kai Blin",
     author_email = "kai.blin@biotech.uni-tuebingen.de",
     description = ("A collection of bioinformatics-related helper functions"),
