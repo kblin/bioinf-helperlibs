@@ -110,11 +110,21 @@ def sanity_check_embl(handle):
     return sanity_check_insdcio(handle, id_marker, fake_id_line)
 
 
+def sanity_check_genbank(handle):
+    """Sanity check GenBank format files"""
+    id_marker = 'LOCUS '
+    fake_id_line = 'LOCUS       DUMMY                      1 bp    DNA     linear   BCT 01-JAN-1970'
+    return sanity_check_insdcio(handle, id_marker, fake_id_line)
+
+
 def parse(handle, robust=False):
     seqtype = _get_seqtype_from_ext(handle)
     if robust:
         if seqtype == "embl":
             handle = sanity_check_embl(handle)
+        elif seqtype == "genbank":
+            handle = sanity_check_genbank(handle)
+
     return SeqIO.parse(handle, seqtype)
 
 
