@@ -112,6 +112,7 @@ class TestSeqIO(unittest2.TestCase):
             string_seq = h.read()
             self.assertEqual("embl", seqio._guess_seqtype_from_file(string_seq))
 
+
     def test__guess_seqtype_from_file_fasta_no_header(self):
         "Test guessing the sequence type from a fasta file without header"
         with open(get_file_path('no_header.fasta'), 'rU') as h:
@@ -120,11 +121,13 @@ class TestSeqIO(unittest2.TestCase):
             string_seq = h.read()
             self.assertEqual("fasta", seqio._guess_seqtype_from_file(string_seq))
 
+
     def test__guess_seqtype_from_file_fasta_no_header_lower_case(self):
         "Test guessing the sequence type from a lower case fasta file without header"
         with open(get_file_path('no_header.fasta'), 'rU') as h:
             string_seq = h.read().lower()
             self.assertEqual("fasta", seqio._guess_seqtype_from_file(string_seq))
+
 
     def test__guess_seqtype_from_file_raises_error(self):
         "Test guessing the sequence type from file raises error when it fails"
