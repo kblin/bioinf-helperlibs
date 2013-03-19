@@ -1,0 +1,3 @@
+include *.md
+include *.txt
+recursive-include helperlibs/tests/files *.embl *.fasta *.gbk
