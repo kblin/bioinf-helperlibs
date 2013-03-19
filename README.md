@@ -15,4 +15,6 @@ The quickest way to get started using the helperlibs is to dump the helperlibs
 folder in the top level directory for your project.
 
 Of course you can also install it in your Python path, by using
-`pip install git+git://github.com/kblin/bioinf-helperlibs.git`.
+`pip install helperlibs` for the latest stable release or
+`pip install git+git://github.com/kblin/bioinf-helperlibs.git` for the lastest
+code from git.
