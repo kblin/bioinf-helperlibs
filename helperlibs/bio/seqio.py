@@ -27,6 +27,8 @@ except ImportError:
 def _get_seqtype_from_ext(handle):
     if isinstance(handle, basestring):
         name = handle
+    elif hasattr(handle, 'filename'):
+        name = handle.filename
     elif hasattr(handle, 'name'):
         name = handle.name
     else:
