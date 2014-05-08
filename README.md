@@ -1,6 +1,8 @@
 Helperlibs README
 =================
 
+[![Build Status](https://drone.io/github.com/kblin/bioinf-helperlibs/status.png)](https://drone.io/github.com/kblin/bioinf-helperlibs/latest)
+
 This library is a collection of Bioinformatics-related helper functions
 that I have created in the course of writing bioinformatics tools.
 
@@ -9,7 +11,7 @@ usually ends up in this helper library
 
 
 Quickstart
-==========
+----------
 
 The quickest way to get started using the helperlibs is to dump the helperlibs
 folder in the top level directory for your project.
