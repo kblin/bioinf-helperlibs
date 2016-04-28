@@ -1,7 +1,7 @@
 Helperlibs README
 =================
 
-[![Build Status](https://drone.io/github.com/kblin/bioinf-helperlibs/status.png)](https://drone.io/github.com/kblin/bioinf-helperlibs/latest)
+[![Build Status](http://github.drone.secondarymetabolites.org/api/badges/kblin/bioinf-helperlibs/status.svg)](http://github.drone.secondarymetabolites.org/kblin/bioinf-helperlibs)
 
 This library is a collection of Bioinformatics-related helper functions
 that I have created in the course of writing bioinformatics tools.

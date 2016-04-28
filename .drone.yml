@@ -1,0 +1,6 @@
+build:
+  image: alpine
+  commands:
+    - apk --no-cache add python py-pip gcc python-dev musl-dev
+    - pip install biopython nose minimock
+    - nosetests -v
