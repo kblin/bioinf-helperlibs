@@ -31,6 +31,10 @@ class TestSeqIOSeqtype(unittest2.TestCase):
         fna_h = DummyHandle("test.fna")
         faa_h = DummyHandle("test.faa")
         fas_h = DummyHandle("test.fas")
+        gbk_gz_h = DummyHandle("test.gbk.gz")
+        gb_gz_h = DummyHandle("test.gb.gz")
+        genbank_gz_h = DummyHandle("test.genbank.gz")
+        gbff_gz_h = DummyHandle("test.gbff.gz")
         invalid_h = DummyHandle("test.invalid")
 
         for handle in (gbk_h, gb_h, genbank_h, gbff_h):
@@ -41,6 +45,9 @@ class TestSeqIOSeqtype(unittest2.TestCase):
 
         for handle in (fa_h, fasta_h, fna_h, faa_h, fas_h):
             self.assertEqual("fasta", seqio._get_seqtype_from_ext(handle))
+
+        for handle in (gbk_gz_h, gb_gz_h, genbank_gz_h, gbff_gz_h):
+            self.assertEqual("gz-genbank", seqio._get_seqtype_from_ext(handle))
 
         self.assertRaises(ValueError, seqio._get_seqtype_from_ext, invalid_h)
 
@@ -55,6 +62,9 @@ class TestSeqIOSeqtype(unittest2.TestCase):
 
         for string in ("test.fa", "test.fasta", "test.fna", "test.faa", "test.fas"):
             self.assertEqual("fasta", seqio._get_seqtype_from_ext(string))
+
+        for string in ("test.gbk.gz", "test.gb.gz", "test.genbank.gz", "test.gbff.gz"):
+            self.assertEqual("gz-genbank", seqio._get_seqtype_from_ext(string))
 
         self.assertRaises(ValueError, seqio._get_seqtype_from_ext, "test.invalid")
 

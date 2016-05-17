@@ -22,6 +22,7 @@ except ImportError:
     from StringIO import StringIO
 from Bio import SeqIO
 
+
 def _get_seqtype_from_ext(handle):
     '''Predict the filetype from a handle's name'''
     if isinstance(handle, basestring):
@@ -32,13 +33,19 @@ def _get_seqtype_from_ext(handle):
         name = handle.name
     else:
         raise ValueError("Unknown datatype for handle!")
+
+    modifier = ''
     dummy, ext = path.splitext(name.lower())
+    if ext == ".gz":
+        modifier = 'gz-'
+        dummy, ext = path.splitext(dummy)
+
     if ext in (".gbk", ".gb", ".genbank", ".gbff"):
-        return "genbank"
+        return modifier + "genbank"
     elif ext in (".embl", ".emb"):
-        return "embl"
+        return modifier + "embl"
     elif ext in (".fa", ".fasta", ".fna", ".faa", ".fas"):
-        return "fasta"
+        return modifier + "fasta"
     else:
         raise ValueError("Unknown file format '%s'." % ext)
 
