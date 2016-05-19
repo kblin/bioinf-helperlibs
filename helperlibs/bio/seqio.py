@@ -152,7 +152,10 @@ def parse(handle, robust=False):
 
     if seqtype.startswith('gz-'):
         import gzip
-        handle = gzip.GzipFile(fileobj=handle)
+        if isinstance(handle, basestring):
+            handle = gzip.open(handle)
+        else:
+            handle = gzip.GzipFile(fileobj=handle)
         seqtype = seqtype[3:]
 
     # False positive from pylint, both handles are fileobj-like
@@ -175,7 +178,10 @@ def read(handle, robust=False):
 
     if seqtype.startswith('gz-'):
         import gzip
-        handle = gzip.GzipFile(fileobj=handle)
+        if isinstance(handle, basestring):
+            handle = gzip.open(handle)
+        else:
+            handle = gzip.GzipFile(fileobj=handle)
         seqtype = seqtype[3:]
 
     # False positive from pylint, both handles are fileobj-like

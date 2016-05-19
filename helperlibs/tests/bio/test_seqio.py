@@ -293,3 +293,15 @@ class TestSeqIOZipped(unittest2.TestCase):
         with open(get_file_path('melanin.gbk.gz'), 'rb') as h:
             record = seqio.read(h)
         self.assertEqual("AB070938.1", record.id)
+
+    def test_parse_genbank_path(self):
+        "Test parsing a gzipped GenBank file specified by path"
+        fname = get_file_path('melanin.gbk.gz')
+        records = list(seqio.parse(fname))
+        self.assertEqual(1, len(records))
+
+    def test_read_genbank_path(self):
+        "Test reading a gzipped GenBank file specified by path"
+        fname = get_file_path('melanin.gbk.gz')
+        record = seqio.read(fname)
+        self.assertEqual("AB070938.1", record.id)
