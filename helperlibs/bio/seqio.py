@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-#
 # Thin convenience wrapper for BioPython's SeqIO code
 # Copyright (C) 2012 Kai Blin <kai.blin@biotech.uni-tuebingen.de>
 #
@@ -15,16 +13,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+'''Wrappers for Bio.SeqIO'''
 
-from Bio import SeqIO
 from os import path
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
+from Bio import SeqIO
 
 def _get_seqtype_from_ext(handle):
+    '''Predict the filetype from a handle's name'''
     if isinstance(handle, basestring):
         name = handle
     elif hasattr(handle, 'filename'):
@@ -141,7 +140,11 @@ def sanity_check_fasta(handle):
 
 
 def parse(handle, robust=False):
+    '''Wrap SeqIO.parse'''
     seqtype = _get_seqtype_from_ext(handle)
+
+    # False positive from pylint, both handles are fileobj-like
+    # pylint: disable=redefined-variable-type
     if robust:
         if seqtype == "embl":
             handle = sanity_check_embl(handle)
@@ -149,12 +152,17 @@ def parse(handle, robust=False):
             handle = sanity_check_genbank(handle)
         elif seqtype == "fasta":
             handle = sanity_check_fasta(handle)
+    # pylint: enable=redefined-variable-type
 
     return SeqIO.parse(handle, seqtype)
 
 
 def read(handle, robust=False):
+    '''Wrap SeqIO.read'''
     seqtype = _get_seqtype_from_ext(handle)
+
+    # False positive from pylint, both handles are fileobj-like
+    # pylint: disable=redefined-variable-type
     if robust:
         if seqtype == "embl":
             handle = sanity_check_embl(handle)
@@ -162,8 +170,11 @@ def read(handle, robust=False):
             handle = sanity_check_genbank(handle)
         elif seqtype == "fasta":
             handle = sanity_check_fasta(handle)
+    # pylint: enable=redefined-variable-type
+
     return SeqIO.read(handle, seqtype)
 
 
 def write(*args, **kwargs):
+    '''Just pass through SeqIO.write'''
     SeqIO.write(*args, **kwargs)
