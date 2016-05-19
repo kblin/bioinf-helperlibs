@@ -279,3 +279,17 @@ class TestSeqIORobust(unittest2.TestCase):
             # robust reading should work
             record = seqio.read(h, robust=True)
             self.assertEqual("DUMMY", record.id)
+
+
+class TestSeqIOZipped(unittest2.TestCase):
+    def test_parse_genbank(self):
+        "Test parsing a gzipped GenBank file"
+        with open(get_file_path('melanin.gbk.gz'), 'rb') as h:
+            records = list(seqio.parse(h))
+        self.assertEqual(1, len(records))
+
+    def test_read_genbank(self):
+        "Test reading a gzipped GenBank file"
+        with open(get_file_path('melanin.gbk.gz'), 'rb') as h:
+            record = seqio.read(h)
+        self.assertEqual("AB070938.1", record.id)

@@ -150,6 +150,11 @@ def parse(handle, robust=False):
     '''Wrap SeqIO.parse'''
     seqtype = _get_seqtype_from_ext(handle)
 
+    if seqtype.startswith('gz-'):
+        import gzip
+        handle = gzip.GzipFile(fileobj=handle)
+        seqtype = seqtype[3:]
+
     # False positive from pylint, both handles are fileobj-like
     # pylint: disable=redefined-variable-type
     if robust:
@@ -167,6 +172,11 @@ def parse(handle, robust=False):
 def read(handle, robust=False):
     '''Wrap SeqIO.read'''
     seqtype = _get_seqtype_from_ext(handle)
+
+    if seqtype.startswith('gz-'):
+        import gzip
+        handle = gzip.GzipFile(fileobj=handle)
+        seqtype = seqtype[3:]
 
     # False positive from pylint, both handles are fileobj-like
     # pylint: disable=redefined-variable-type
