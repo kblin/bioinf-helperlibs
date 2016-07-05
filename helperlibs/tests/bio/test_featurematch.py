@@ -8,6 +8,7 @@ from Bio.SeqFeature import SeqFeature, FeatureLocation
 from Bio.SeqRecord import SeqRecord
 from helperlibs.bio.featurematch import FeatureMatch, find_features
 
+
 class TestFeatureMatch(unittest2.TestCase):
     def setUp(self):
         self.seq = Seq("CCCAAAATGTACTCCACTATCTGCTGATTTGGG", generic_dna)
@@ -24,6 +25,7 @@ class TestFeatureMatch(unittest2.TestCase):
         self.assertEqual(str(m.dna), "ATGTACTCCACTATCTGCTGA")
         self.assertEqual(str(m.long_dna), str(self.feature_seq))
         self.assertEqual(str(m.promotor_region), "AAA")
+        self.assertEqual(str(m.terminator_region), "TTT")
         self.assertEqual(str(m.mrna), str(self.feature_seq.transcribe()))
         self.assertEqual(str(m.aas), str(self.feature.extract(self.seq).translate(to_stop=True)))
 
@@ -36,6 +38,7 @@ class TestFeatureMatch(unittest2.TestCase):
         self.assertEqual(str(m.dna), str(feature_seq[3:-3].reverse_complement()))
         self.assertEqual(str(m.long_dna), str(self.feature_seq))
         self.assertEqual(str(m.promotor_region), "AAA")
+        self.assertEqual(str(m.terminator_region), "TTT")
         self.assertEqual(str(m.mrna), str(feature_seq.transcribe().reverse_complement()))
         self.assertEqual(str(m.aas), str(inv_feature.extract(inv_seq).translate(to_stop=True)))
 
@@ -140,6 +143,12 @@ class TestFeatureMatch(unittest2.TestCase):
         "Test FeatureMatch promotor DNA FASTA output"
         expected = "%s\n%s" % (self.match.get_fasta_header(), self.match.promotor_region)
         self.assertMultiLineEqual(self.match.promotor_fasta(), expected)
+
+
+    def test_terminator_fasta(self):
+        "Test FeatureMatch terminator DNA FASTA output"
+        expected = "%s\n%s" % (self.match.get_fasta_header(), self.match.terminator_region)
+        self.assertMultiLineEqual(self.match.terminator_fasta(), expected)
 
 
 class TestFindFeatures(unittest2.TestCase):

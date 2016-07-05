@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+
 
 class FeatureMatch:
     """mRNA of a feature"""
@@ -26,12 +26,14 @@ class FeatureMatch:
             self.dna = seq[ul:-ul].reverse_complement()
             self.long_dna = seq.reverse_complement()
             self.promotor_region = seq[-ul:].reverse_complement()
+            self.terminator_region = seq[:ul].reverse_complement()
             self.mrna = seq.transcribe().reverse_complement()
         else:
             self.direction = "forward"
             self.dna = seq[ul:-ul]
             self.long_dna = seq
             self.promotor_region = seq[:ul]
+            self.terminator_region = seq[-ul:]
             self.mrna = seq.transcribe()
 
         self.aas = self.dna.translate(to_stop=True)
@@ -98,6 +100,13 @@ class FeatureMatch:
         ret = self.get_fasta_header()
         ret += "\n%s" % self.promotor_region
         return ret
+
+    def terminator_fasta(self):
+        """get feature downstream UTR DNA sequence in FASTA format"""
+        ret = self.get_fasta_header()
+        ret += "\n%s" % self.terminator_region
+        return ret
+
 
 def find_features(seqs, locus_tag="all", utr_len=200):
     """Find features in sequences by locus tag"""
