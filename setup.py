@@ -13,7 +13,7 @@ setup(
     name = "helperlibs",
     version = version,
     author = "Kai Blin",
-    author_email = "kai.blin@biotech.uni-tuebingen.de",
+    author_email = "kblin@biosustain.dtu.dk",
     description = ("A collection of bioinformatics-related helper functions"),
     license = "GPL",
     keywords = "bioinformatics",
