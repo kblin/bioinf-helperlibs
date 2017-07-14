@@ -146,9 +146,10 @@ def sanity_check_fasta(handle):
     return new_handle
 
 
-def parse(handle, robust=False):
+def parse(handle, seqtype=None, robust=False):
     '''Wrap SeqIO.parse'''
-    seqtype = _get_seqtype_from_ext(handle)
+    if seqtype is None:
+        seqtype = _get_seqtype_from_ext(handle)
 
     if seqtype.startswith('gz-'):
         import gzip
@@ -172,9 +173,10 @@ def parse(handle, robust=False):
     return SeqIO.parse(handle, seqtype)
 
 
-def read(handle, robust=False):
+def read(handle, seqtype=None, robust=False):
     '''Wrap SeqIO.read'''
-    seqtype = _get_seqtype_from_ext(handle)
+    if seqtype is None:
+        seqtype = _get_seqtype_from_ext(handle)
 
     if seqtype.startswith('gz-'):
         import gzip

@@ -160,6 +160,19 @@ class TestSeqIODummy(unittest2.TestCase):
         seqio.read(self.handle)
         assert_same_trace(self.tt, expected_trace)
 
+    def test_parse_seqtype(self):
+        "Test running the Bio.SeqIO parser with specified seqtype parameter"
+        mock("Bio.SeqIO.parse", tracker=self.tt, returns=[])
+        expected_trace = "    Called Bio.SeqIO.parse(DummyHandle('test.gbk'), 'embl')"
+        seqio.parse(self.handle, 'embl')
+        assert_same_trace(self.tt, expected_trace)
+
+    def test_read_seqtype(self):
+        "Test reading a single sequence via Bio.SeqIO"
+        mock("Bio.SeqIO.read", tracker=self.tt, returns=[])
+        expected_trace = "    Called Bio.SeqIO.read(DummyHandle('test.gbk'), 'embl')"
+        seqio.read(self.handle, 'embl')
+        assert_same_trace(self.tt, expected_trace)
 
     def test_write_calls_biopython(self):
         "Test writing Bio.SeqIO records"
