@@ -1,7 +1,4 @@
-try:
-    import unittest2
-except ImportError:
-    import unittest as unittest2
+import unittest
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from Bio.SeqFeature import SeqFeature, FeatureLocation
@@ -9,7 +6,7 @@ from Bio.SeqRecord import SeqRecord
 from helperlibs.bio.featurematch import FeatureMatch, find_features
 
 
-class TestFeatureMatch(unittest2.TestCase):
+class TestFeatureMatch(unittest.TestCase):
     def setUp(self):
         self.seq = Seq("CCCAAAATGTACTCCACTATCTGCTGATTTGGG", generic_dna)
         self.feature = SeqFeature(FeatureLocation(6, 27), type="gene", strand=1)
@@ -151,7 +148,7 @@ class TestFeatureMatch(unittest2.TestCase):
         self.assertMultiLineEqual(self.match.terminator_fasta(), expected)
 
 
-class TestFindFeatures(unittest2.TestCase):
+class TestFindFeatures(unittest.TestCase):
     def setUp(self):
         seq = Seq("CCCAAAATGTACTCCACTATCTGCTGATTTGGG", generic_dna)
         feature = SeqFeature(FeatureLocation(6, 27), type="CDS", strand=1)

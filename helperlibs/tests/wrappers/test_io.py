@@ -1,14 +1,11 @@
-try:
-    import unittest2
-except ImportError:
-    import unittest as unittest2
+import unittest
 import os
 import tempfile
 import shutil
 from minimock import mock, restore, TraceTracker, assert_same_trace
 from helperlibs.wrappers.io import TemporaryPipe, TemporaryFile, TemporaryDirectory
 
-class TestTemporaryPipe(unittest2.TestCase):
+class TestTemporaryPipe(unittest.TestCase):
     def test__init(self):
         "Test TemporaryPipe object creation"
         pipe = TemporaryPipe()
@@ -51,7 +48,7 @@ class TestTemporaryPipe(unittest2.TestCase):
         assert_same_trace(self.tt, trace)
 
 
-class TestTemporaryDirectory(unittest2.TestCase):
+class TestTemporaryDirectory(unittest.TestCase):
     def setUp(self):
         self.tt = TraceTracker()
         self.cwd = '/old/cur/dir'
@@ -108,7 +105,7 @@ class TestTemporaryDirectory(unittest2.TestCase):
         assert_same_trace(self.tt, trace)
 
 
-class TestTemporaryFile(unittest2.TestCase):
+class TestTemporaryFile(unittest.TestCase):
     def setUp(self):
         self.handle = 42
         self.tt = TraceTracker()

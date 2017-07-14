@@ -1,7 +1,4 @@
-try:
-    import unittest2
-except ImportError:
-    import unittest as unittest2
+import unittest
 import Bio.SeqIO
 from helperlibs.bio import seqio
 from helperlibs.tests import get_file_path
@@ -17,7 +14,7 @@ class DummyHandle(object):
         return "DummyHandle(%r)" % self.name
 
 
-class TestSeqIOSeqtype(unittest2.TestCase):
+class TestSeqIOSeqtype(unittest.TestCase):
     def test__get_seqtype_from_ext(self):
         "Test guessing the sequence type from the file extension for handle input"
         gbk_h = DummyHandle("test.gbk")
@@ -135,7 +132,7 @@ class TestSeqIOSeqtype(unittest2.TestCase):
         self.assertRaises(ValueError, seqio._guess_seqtype_from_file, 'bad & invalid')
 
 
-class TestSeqIODummy(unittest2.TestCase):
+class TestSeqIODummy(unittest.TestCase):
     def setUp(self):
         self.tt = TraceTracker()
         self.handle = DummyHandle("test.gbk")
@@ -182,7 +179,7 @@ class TestSeqIODummy(unittest2.TestCase):
         assert_same_trace(self.tt, expected_trace)
 
 
-class TestSeqIORobust(unittest2.TestCase):
+class TestSeqIORobust(unittest.TestCase):
     def test_parse_genbank_valid(self):
         "Test parsing a valid genbank record"
         with open(get_file_path('melanin.gbk'), 'rU') as h:
@@ -294,7 +291,7 @@ class TestSeqIORobust(unittest2.TestCase):
             self.assertEqual("DUMMY", record.id)
 
 
-class TestSeqIOZipped(unittest2.TestCase):
+class TestSeqIOZipped(unittest.TestCase):
     def test_parse_genbank(self):
         "Test parsing a gzipped GenBank file"
         with open(get_file_path('melanin.gbk.gz'), 'rb') as h:
