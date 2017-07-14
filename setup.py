@@ -22,7 +22,7 @@ setup(
               'helperlibs.tests', 'helperlibs.tests.bio',
               'helperlibs.tests.wrappers'],
     install_requires=['BioPython>=1.62'],
-    tests_require=['unittest2','minimock','nose'],
+    tests_require=['minimock','pytest','pytest-cover'],
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 3 - Alpha",
