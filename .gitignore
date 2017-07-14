@@ -1,2 +1,8 @@
 *.swp
 *.pyc
+.coverage
+htmlcov/*
+.cache/*
+.idea/*
+dist/*
+helperlibs.egg-info/*
