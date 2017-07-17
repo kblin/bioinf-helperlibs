@@ -40,30 +40,30 @@ class FeatureMatch:
 
     def get_fasta_header(self):
         ret = ">"
-        if self.feature.qualifiers.has_key('locus_tag'):
+        if 'locus_tag' in self.feature.qualifiers:
             ret += self.feature.qualifiers['locus_tag'][0]
-        elif self.feature.qualifiers.has_key('gene'):
+        elif 'gene' in self.feature.qualifiers:
             ret += self.feature.qualifiers['gene'][0]
         else:
             ret += "untagged"
-        if self.feature.qualifiers.has_key('product'):
+        if 'product' in self.feature.qualifiers:
             ret += "|%s" % self.feature.qualifiers['product'][0]
-        if self.feature.qualifiers.has_key('protein_id'):
+        if 'protein_id' in self.feature.qualifiers:
             ret += "|%s" % self.feature.qualifiers['protein_id'][0]
         return ret
 
     def __str__(self):
         ret = "Feature:"
-        if self.feature.qualifiers.has_key('locus_tag'):
+        if 'locus_tag' in self.feature.qualifiers:
             ret += "\n\tTag: %s" % self.feature.qualifiers['locus_tag'][0]
-        elif self.feature.qualifiers.has_key('gene'):
+        elif 'gene' in self.feature.qualifiers:
             ret += "\n\tTag: %s" % self.feature.qualifiers['gene'][0]
         else:
             ret += "\n\tuntagged"
         ret += "\n\tStrand: %s" % self.direction
-        if self.feature.qualifiers.has_key('product'):
+        if 'product' in self.feature.qualifiers:
             ret += "\n\tProduct: %s" % self.feature.qualifiers['product'][0]
-        if self.feature.qualifiers.has_key('protein_id'):
+        if 'protein_id' in self.feature.qualifiers:
             ret += "\n\tProtein ID: %s" % \
                 self.feature.qualifiers['protein_id'][0]
         ret += "\n\tDNA: %s" % self.dna
