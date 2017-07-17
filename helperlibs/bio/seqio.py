@@ -15,12 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''Wrappers for Bio.SeqIO'''
 
+import sys
 from os import path
 try:
     from cStringIO import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from Bio._py3k import StringIO
 from Bio import SeqIO
+from Bio._py3k import basestring
 
 
 def _get_seqtype_from_ext(handle):
@@ -77,6 +79,36 @@ def _guess_seqtype_from_file(handle):
         return 'fasta'
 
     raise ValueError("Failed to guess format for input")
+
+
+def _unzip_handle(handle):
+    """Transparently unzip the file handle"""
+    if isinstance(handle, basestring):
+        handle = _gzip_open_filename(handle)
+    else:
+        handle = _gzip_open_handle(handle)
+    return handle
+
+
+def _gzip_open_filename(handle):
+    """Hide Python 2 vs. 3 differences in gzip.open()"""
+    import gzip
+    if sys.version_info[0] > 2:
+        handle = gzip.open(handle, mode='rt', encoding="UTF-8")
+    else:
+        handle = gzip.open(handle)
+    return handle
+
+
+def _gzip_open_handle(handle):
+    """"Hide Python 2 vs. 3 differences in gzip.GzipFile()"""
+    import gzip
+    if sys.version_info[0] > 2:
+        import io
+        handle = io.TextIOWrapper(gzip.GzipFile(fileobj=handle), encoding="UTF-8")
+    else:
+        handle = gzip.GzipFile(fileobj=handle)
+    return handle
 
 
 def sanity_check_insdcio(handle, id_marker, fake_id_line):
@@ -152,11 +184,7 @@ def parse(handle, seqtype=None, robust=False):
         seqtype = _get_seqtype_from_ext(handle)
 
     if seqtype.startswith('gz-'):
-        import gzip
-        if isinstance(handle, basestring):
-            handle = gzip.open(handle)
-        else:
-            handle = gzip.GzipFile(fileobj=handle)
+        handle = _unzip_handle(handle)
         seqtype = seqtype[3:]
 
     # False positive from pylint, both handles are fileobj-like
@@ -179,11 +207,7 @@ def read(handle, seqtype=None, robust=False):
         seqtype = _get_seqtype_from_ext(handle)
 
     if seqtype.startswith('gz-'):
-        import gzip
-        if isinstance(handle, basestring):
-            handle = gzip.open(handle)
-        else:
-            handle = gzip.GzipFile(fileobj=handle)
+        handle = _unzip_handle(handle)
         seqtype = seqtype[3:]
 
     # False positive from pylint, both handles are fileobj-like
