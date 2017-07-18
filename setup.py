@@ -1,6 +1,7 @@
 import os
 from setuptools import setup
 
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
@@ -10,19 +11,19 @@ for line in open(os.path.join('helperlibs', '__init__.py'), 'r'):
         exec(line.strip())
 
 setup(
-    name = "helperlibs",
-    version = version,
-    author = "Kai Blin",
-    author_email = "kblin@biosustain.dtu.dk",
+    name="helperlibs",
+    version=version,
+    author="Kai Blin",
+    author_email="kblin@biosustain.dtu.dk",
     description = ("A collection of bioinformatics-related helper functions"),
-    license = "GPL",
-    keywords = "bioinformatics",
-    url = "https://github.com/kblin/bioinf-helperlibs/wiki",
+    license="GPL",
+    keywords="bioinformatics",
+    url="https://github.com/kblin/bioinf-helperlibs/wiki",
     packages=['helperlibs', 'helperlibs.bio', 'helperlibs.wrappers',
               'helperlibs.tests', 'helperlibs.tests.bio',
               'helperlibs.tests.wrappers'],
     install_requires=['BioPython>=1.62'],
-    tests_require=['minimock','pytest','pytest-cover'],
+    tests_require=['minimock', 'pytest', 'pytest-cover'],
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 3 - Alpha",
