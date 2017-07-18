@@ -34,7 +34,7 @@ class TemporaryDirectory(object):
         shutil.rmtree(self.tempdir)
 
 
-if sys.platform in ('linux2', 'darwin'):
+if sys.platform in ('linux', 'linux2', 'darwin'):
     class TemporaryPipe(object):
         def __init__(self, pipename="pipe"):
             self.pipename = pipename
