@@ -115,7 +115,7 @@ def find_features(seqs, locus_tag="all", utr_len=200):
     for seq_i in seqs:
         for feature in seq_i.features:
             if feature.type == "CDS" and (locus_tag == "all" or \
-                    (feature.qualifiers.has_key('locus_tag') and \
+                    ('locus_tag' in feature.qualifiers and \
                     feature.qualifiers['locus_tag'][0] == locus_tag)):
                 start = max(0, feature.location.nofuzzy_start - utr_len)
                 stop  = max(0, feature.location.nofuzzy_end + utr_len)
