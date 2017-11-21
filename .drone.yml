@@ -1,9 +1,10 @@
-build:
-  image: alpine
-  commands:
-    - apk --no-cache add python python3 gcc python-dev python3-dev musl-dev
-    - pip install tox
-    - tox
+pipeline:
+  build:
+    image: alpine
+    commands:
+      - apk --no-cache add python python3 gcc python-dev python3-dev musl-dev
+      - pip install tox
+      - tox
 
   slack:
     image: plugins/slack
