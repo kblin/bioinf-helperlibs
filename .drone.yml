@@ -3,7 +3,7 @@ pipeline:
     image: alpine
     commands:
       - apk --no-cache add python python3 gcc python-dev python3-dev musl-dev
-      - pip install tox
+      - pip3 install tox
       - tox
 
   slack:
