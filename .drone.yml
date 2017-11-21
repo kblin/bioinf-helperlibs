@@ -1,6 +1,13 @@
 build:
   image: alpine
   commands:
-    - apk --no-cache add python py-pip gcc python-dev musl-dev
-    - pip install biopython nose minimock
-    - nosetests -v
+    - apk --no-cache add python python3 gcc python-dev python3-dev musl-dev
+    - pip install tox
+    - tox
+
+  slack:
+    image: plugins/slack
+    channel: bots
+    secrets: [ slack_webhook ]
+    when:
+      status: [ success, failure ]
