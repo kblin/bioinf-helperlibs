@@ -15,6 +15,12 @@ long_description = short_description
 if os.path.exists('README.rst'):
     long_description = open('README.rst').read()
 
+tests_require = [
+    'minimock',
+    'pytest',
+    'pytest-cover'
+]
+
 
 setup(
     name="helperlibs",
@@ -30,7 +36,7 @@ setup(
               'helperlibs.tests', 'helperlibs.tests.bio',
               'helperlibs.tests.wrappers'],
     install_requires=['BioPython>=1.62'],
-    tests_require=['minimock', 'pytest', 'pytest-cover'],
+    tests_require=tests_require,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
