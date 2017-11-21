@@ -10,12 +10,19 @@ for line in open(os.path.join('helperlibs', '__init__.py'), 'r'):
     if line.startswith('version'):
         exec(line.strip())
 
+short_description = "A collection of bioinformatics-related helper functions",
+long_description = short_description
+if os.path.exists('README.rst'):
+    long_description = open('README.rst').read()
+
+
 setup(
     name="helperlibs",
     version=version,
     author="Kai Blin",
     author_email="kblin@biosustain.dtu.dk",
-    description="A collection of bioinformatics-related helper functions",
+    description=short_description,
+    long_description=long_description,
     license="GPL",
     keywords="bioinformatics",
     url="https://github.com/kblin/bioinf-helperlibs/wiki",
@@ -24,7 +31,6 @@ setup(
               'helperlibs.tests.wrappers'],
     install_requires=['BioPython>=1.62'],
     tests_require=['minimock', 'pytest', 'pytest-cover'],
-    long_description=read('README.md'),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
