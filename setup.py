@@ -10,7 +10,7 @@ for line in open(os.path.join('helperlibs', '__init__.py'), 'r'):
     if line.startswith('version'):
         exec(line.strip())
 
-short_description = "A collection of bioinformatics-related helper functions",
+short_description = "A collection of bioinformatics-related helper functions"
 long_description = short_description
 if os.path.exists('README.rst'):
     long_description = open('README.rst').read()
