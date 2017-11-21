@@ -1,15 +1,15 @@
 pipeline:
   build-py2:
-    image: alpine
+    image: debian:stretch
     commands:
-      - apk --no-cache add python py-pip gcc python-dev musl-dev
+      - apt update && apt upgrade && apt install build-essential python-dev python-pip
       - pip install -e .[testing]
       - pytest
 
   build-py3:
-    image: alpine
+    image: debian:stretch
     commands:
-      - apk --no-cache add python3 gcc python3-dev musl-dev
+      - apt update && apt upgrade && apt install build-essential python3-dev python3-pip
       - pip3 install -e .[testing]
       - pytest
 
