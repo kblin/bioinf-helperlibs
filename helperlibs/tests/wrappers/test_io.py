@@ -110,6 +110,7 @@ class TestTemporaryFile(unittest.TestCase):
         self.handle = 42
         self.tt = TraceTracker()
         mock("os.unlink", tracker=self.tt)
+        mock("os.close", tracker=self.tt)
         mock("tempfile.mkstemp", tracker=self.tt, returns=(self.handle, "/fake/tmp/file"))
 
     def tearDown(self):
@@ -136,6 +137,7 @@ class TestTemporaryFile(unittest.TestCase):
         tfile = TemporaryFile()
 
         trace = """    Called tempfile.mkstemp('', 'tmp', None, False)
+    Called os.close(42)
     Called os.unlink('/fake/tmp/file')"""
         tfile.__exit__(None, None, None)
         assert_same_trace(self.tt, trace)
