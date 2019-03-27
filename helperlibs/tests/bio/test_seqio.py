@@ -19,6 +19,10 @@ class TestSeqIOSeqtype(unittest.TestCase):
         handle = DummyHandle("test.%s" % extension)
         self.assertEqual(expected_type, seqio._get_seqtype_from_ext(handle))
 
+        # and test cases where the whole filename *is* the extension
+        handle = DummyHandle(extension)
+        self.assertEqual(expected_type, seqio._get_seqtype_from_ext(handle))
+
     def test__get_seqtype_from_ext(self):
         "Test guessing the sequence type from the file extension for handle input"
         genbank_extensions = ("gbk", "gb", "genbank", "gbff")
