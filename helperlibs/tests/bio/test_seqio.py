@@ -15,37 +15,27 @@ class DummyHandle(object):
 
 
 class TestSeqIOSeqtype(unittest.TestCase):
+    def ensure_type_for_extension(self, extension, expected_type):
+        handle = DummyHandle("test.%s" % extension)
+        self.assertEqual(expected_type, seqio._get_seqtype_from_ext(handle))
+
     def test__get_seqtype_from_ext(self):
         "Test guessing the sequence type from the file extension for handle input"
-        gbk_h = DummyHandle("test.gbk")
-        gb_h = DummyHandle("test.gb")
-        genbank_h = DummyHandle("test.genbank")
-        gbff_h = DummyHandle("test.gbff")
-        embl_h = DummyHandle("test.embl")
-        emb_h = DummyHandle("test.emb")
-        fa_h = DummyHandle("test.fa")
-        fasta_h = DummyHandle("test.fasta")
-        fna_h = DummyHandle("test.fna")
-        faa_h = DummyHandle("test.faa")
-        fas_h = DummyHandle("test.fas")
-        gbk_gz_h = DummyHandle("test.gbk.gz")
-        gb_gz_h = DummyHandle("test.gb.gz")
-        genbank_gz_h = DummyHandle("test.genbank.gz")
-        gbff_gz_h = DummyHandle("test.gbff.gz")
+        genbank_extensions = ("gbk", "gb", "genbank", "gbff")
+
+        for extension in genbank_extensions:
+            self.ensure_type_for_extension(extension, "genbank")
+
+        for extension in ["embl", "emb"]:
+            self.ensure_type_for_extension(extension, "embl")
+
+        for extension in ["fa", "fasta", "fna", "faa", "fas"]:
+            self.ensure_type_for_extension(extension, "fasta")
+
+        for extension in genbank_extensions:
+            self.ensure_type_for_extension(extension + ".gz", "gz-genbank")
+
         invalid_h = DummyHandle("test.invalid")
-
-        for handle in (gbk_h, gb_h, genbank_h, gbff_h):
-            self.assertEqual("genbank", seqio._get_seqtype_from_ext(handle))
-
-        for handle in (embl_h, emb_h):
-            self.assertEqual("embl", seqio._get_seqtype_from_ext(handle))
-
-        for handle in (fa_h, fasta_h, fna_h, faa_h, fas_h):
-            self.assertEqual("fasta", seqio._get_seqtype_from_ext(handle))
-
-        for handle in (gbk_gz_h, gb_gz_h, genbank_gz_h, gbff_gz_h):
-            self.assertEqual("gz-genbank", seqio._get_seqtype_from_ext(handle))
-
         self.assertRaises(ValueError, seqio._get_seqtype_from_ext, invalid_h)
 
 
