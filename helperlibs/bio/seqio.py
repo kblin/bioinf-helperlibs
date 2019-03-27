@@ -42,6 +42,9 @@ def _get_seqtype_from_ext(handle):
         modifier = 'gz-'
         dummy, ext = path.splitext(dummy)
 
+    if not ext:
+        ext = "." + dummy
+
     if ext in (".gbk", ".gb", ".genbank", ".gbff"):
         return modifier + "genbank"
     elif ext in (".embl", ".emb"):
