@@ -11,9 +11,7 @@ for line in open(os.path.join('helperlibs', '__init__.py'), 'r'):
         exec(line.strip())
 
 short_description = "A collection of bioinformatics-related helper functions"
-long_description = short_description
-if os.path.exists('README.rst'):
-    long_description = open('README.rst').read()
+long_description = open('README.md').read()
 
 tests_require = [
     'minimock',
@@ -29,6 +27,7 @@ setup(
     author_email="kblin@biosustain.dtu.dk",
     description=short_description,
     long_description=long_description,
+    long_description_content_type='text/markdown',
     license="GPL",
     keywords="bioinformatics",
     url="https://github.com/kblin/bioinf-helperlibs/wiki",
