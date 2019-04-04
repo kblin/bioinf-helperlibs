@@ -19,3 +19,4 @@ pipeline:
     secrets: [ slack_webhook ]
     when:
       status: [ success, failure ]
+      event: push
