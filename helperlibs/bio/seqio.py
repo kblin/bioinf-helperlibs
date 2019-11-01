@@ -37,13 +37,15 @@ def _get_seqtype_from_ext(handle):
         raise ValueError("Unknown datatype for handle!")
 
     modifier = ''
-    dummy, ext = path.splitext(name.lower())
-    if ext == ".gz":
+    if name.lower().endswith(".gz"):
         modifier = 'gz-'
-        dummy, ext = path.splitext(dummy)
+        name = name[:-3]
 
+    dummy, ext = path.splitext(name.lower())
+
+    # handle inputs like /tmp/fasta without an extension
     if not ext:
-        ext = "." + dummy
+        ext = "." + path.split(name)[-1]
 
     if ext in (".gbk", ".gb", ".genbank", ".gbff"):
         return modifier + "genbank"
