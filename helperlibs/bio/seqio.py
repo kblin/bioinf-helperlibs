@@ -15,19 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''Wrappers for Bio.SeqIO'''
 
+import gzip
+import io
 import sys
 from os import path
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from Bio._py3k import StringIO
 from Bio import SeqIO
-from Bio._py3k import basestring
 
 
 def _get_seqtype_from_ext(handle):
     '''Predict the filetype from a handle's name'''
-    if isinstance(handle, basestring):
+    if isinstance(handle, str):
         name = handle
     elif hasattr(handle, 'filename'):
         name = handle.filename
@@ -59,8 +56,8 @@ def _get_seqtype_from_ext(handle):
 
 def _guess_seqtype_from_file(handle):
     "Guess the sequence type from the file's contents"
-    if isinstance(handle, basestring):
-        handle = StringIO(handle)
+    if isinstance(handle, str):
+        handle = io.StringIO(handle)
 
     for line in handle:
         if not line.strip():
@@ -88,7 +85,7 @@ def _guess_seqtype_from_file(handle):
 
 def _unzip_handle(handle):
     """Transparently unzip the file handle"""
-    if isinstance(handle, basestring):
+    if isinstance(handle, str):
         handle = _gzip_open_filename(handle)
     else:
         handle = _gzip_open_handle(handle)
@@ -96,24 +93,13 @@ def _unzip_handle(handle):
 
 
 def _gzip_open_filename(handle):
-    """Hide Python 2 vs. 3 differences in gzip.open()"""
-    import gzip
-    if sys.version_info[0] > 2:
-        handle = gzip.open(handle, mode='rt', encoding="UTF-8")
-    else:
-        handle = gzip.open(handle)
-    return handle
+    """Open a gziped file"""
+    return gzip.open(handle, mode='rt', encoding="UTF-8")
 
 
 def _gzip_open_handle(handle):
     """"Hide Python 2 vs. 3 differences in gzip.GzipFile()"""
-    import gzip
-    if sys.version_info[0] > 2:
-        import io
-        handle = io.TextIOWrapper(gzip.GzipFile(fileobj=handle), encoding="UTF-8")
-    else:
-        handle = gzip.GzipFile(fileobj=handle)
-    return handle
+    return io.TextIOWrapper(gzip.GzipFile(fileobj=handle), encoding="UTF-8")
 
 
 def sanity_check_insdcio(handle, id_marker, fake_id_line):
@@ -141,7 +127,7 @@ def sanity_check_insdcio(handle, id_marker, fake_id_line):
         return handle
 
     # If we found an end marker but no ID, fake one.
-    new_handle = StringIO()
+    new_handle = io.StringIO()
     new_handle.write("%s\n" % fake_id_line)
     new_handle.write(handle.read())
     new_handle.seek(0)
@@ -176,7 +162,7 @@ def sanity_check_fasta(handle):
         return handle
 
     fake_header_line = ">DUMMY"
-    new_handle = StringIO()
+    new_handle = io.StringIO()
     new_handle.write("%s\n" % fake_header_line)
     new_handle.write(handle.read())
     new_handle.seek(0)

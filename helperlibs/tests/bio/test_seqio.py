@@ -62,7 +62,7 @@ class TestSeqIOSeqtype(unittest.TestCase):
 
     def test__guess_seqtype_from_file_genbank_correct(self):
         "Test guessing the sequence type from correct genbank contents"
-        with open(get_file_path('melanin.gbk'), 'rU') as h:
+        with open(get_file_path('melanin.gbk'), 'r') as h:
             self.assertEqual("genbank", seqio._guess_seqtype_from_file(h))
             h.seek(0)
             string_seq = h.read()
@@ -71,7 +71,7 @@ class TestSeqIOSeqtype(unittest.TestCase):
 
     def test__guess_seqtype_from_file_embl_corect(self):
         "Test guessing the sequence type from correct embl contents"
-        with open(get_file_path('melanin.embl'), 'rU') as h:
+        with open(get_file_path('melanin.embl'), 'r') as h:
             self.assertEqual("embl", seqio._guess_seqtype_from_file(h))
             h.seek(0)
             string_seq = h.read()
@@ -80,7 +80,7 @@ class TestSeqIOSeqtype(unittest.TestCase):
 
     def test__guess_seqtype_from_file_fasta_correct(self):
         "Test guessing the sequence type from correct fasta contents"
-        with open(get_file_path('melanin.fasta'), 'rU') as h:
+        with open(get_file_path('melanin.fasta'), 'r') as h:
             self.assertEqual("fasta", seqio._guess_seqtype_from_file(h))
             h.seek(0)
             string_seq = h.read()
@@ -89,7 +89,7 @@ class TestSeqIOSeqtype(unittest.TestCase):
 
     def test__guess_seqtype_from_file_genbank_no_header(self):
         "Test guessing the sequence type from a genbank file without header"
-        with open(get_file_path('no_header.gbk'), 'rU') as h:
+        with open(get_file_path('no_header.gbk'), 'r') as h:
             self.assertEqual("genbank", seqio._guess_seqtype_from_file(h))
             h.seek(0)
             string_seq = h.read()
@@ -98,7 +98,7 @@ class TestSeqIOSeqtype(unittest.TestCase):
 
     def test__guess_seqtype_from_file_embl_no_header(self):
         "Test guessing the sequence type from an embl file without header"
-        with open(get_file_path('no_header.embl'), 'rU') as h:
+        with open(get_file_path('no_header.embl'), 'r') as h:
             self.assertEqual("embl", seqio._guess_seqtype_from_file(h))
             h.seek(0)
             string_seq = h.read()
@@ -107,7 +107,7 @@ class TestSeqIOSeqtype(unittest.TestCase):
 
     def test__guess_seqtype_from_file_fasta_no_header(self):
         "Test guessing the sequence type from a fasta file without header"
-        with open(get_file_path('no_header.fasta'), 'rU') as h:
+        with open(get_file_path('no_header.fasta'), 'r') as h:
             self.assertEqual("fasta", seqio._guess_seqtype_from_file(h))
             h.seek(0)
             string_seq = h.read()
@@ -116,7 +116,7 @@ class TestSeqIOSeqtype(unittest.TestCase):
 
     def test__guess_seqtype_from_file_fasta_no_header_lower_case(self):
         "Test guessing the sequence type from a lower case fasta file without header"
-        with open(get_file_path('no_header.fasta'), 'rU') as h:
+        with open(get_file_path('no_header.fasta'), 'r') as h:
             string_seq = h.read().lower()
             self.assertEqual("fasta", seqio._guess_seqtype_from_file(string_seq))
 
@@ -176,28 +176,28 @@ class TestSeqIODummy(unittest.TestCase):
 class TestSeqIORobust(unittest.TestCase):
     def test_parse_genbank_valid(self):
         "Test parsing a valid genbank record"
-        with open(get_file_path('melanin.gbk'), 'rU') as h:
+        with open(get_file_path('melanin.gbk'), 'r') as h:
             records = list(seqio.parse(h))
         self.assertEqual(1, len(records))
 
 
     def test_parse_embl_valid(self):
         "Test parsing a valid embl record"
-        with open(get_file_path('melanin.embl'), 'rU') as h:
+        with open(get_file_path('melanin.embl'), 'r') as h:
             records = list(seqio.parse(h))
         self.assertEqual(1, len(records))
 
 
     def test_parse_fasta_valid(self):
         "Test parsing a valid fasta record"
-        with open(get_file_path('melanin.fasta'), 'rU') as h:
+        with open(get_file_path('melanin.fasta'), 'r') as h:
             records = list(seqio.parse(h))
         self.assertEqual(1, len(records))
 
 
     def test_parse_genbank_no_header(self):
         "Test parsing a genbank record without header"
-        with open(get_file_path('no_header.gbk'), 'rU') as h:
+        with open(get_file_path('no_header.gbk'), 'r') as h:
             # plain BioPython parsing should fail
             records = list(seqio.parse(h))
             self.assertEqual(0, len(records))
@@ -209,7 +209,7 @@ class TestSeqIORobust(unittest.TestCase):
 
     def test_parse_embl_no_header(self):
         "Test parsing an embl record without header"
-        with open(get_file_path('no_header.embl'), 'rU') as h:
+        with open(get_file_path('no_header.embl'), 'r') as h:
             # plain BioPython parsing should fail
             records = list(seqio.parse(h))
             self.assertEqual(0, len(records))
@@ -221,7 +221,7 @@ class TestSeqIORobust(unittest.TestCase):
 
     def test_parse_fasta_no_header(self):
         "Test parsing a fasta record without header"
-        with open(get_file_path('no_header.fasta'), 'rU') as h:
+        with open(get_file_path('no_header.fasta'), 'r') as h:
             # plain BioPython parsing should fail
             records = list(seqio.parse(h))
             self.assertEqual(0, len(records))
@@ -233,28 +233,28 @@ class TestSeqIORobust(unittest.TestCase):
 
     def test_read_genbank_valid(self):
         "Test reading a valid genbank record"
-        with open(get_file_path('melanin.gbk'), 'rU') as h:
+        with open(get_file_path('melanin.gbk'), 'r') as h:
             record = seqio.read(h)
         self.assertEqual("AB070938.1", record.id)
 
 
     def test_read_embl_valid(self):
         "Test reading a valid embl record"
-        with open(get_file_path('melanin.embl'), 'rU') as h:
+        with open(get_file_path('melanin.embl'), 'r') as h:
             record = seqio.read(h)
         self.assertEqual("AB070938.1", record.id)
 
 
     def test_read_fasta_valid(self):
         "Test reading a valid fasta record"
-        with open(get_file_path('melanin.fasta'), 'rU') as h:
+        with open(get_file_path('melanin.fasta'), 'r') as h:
             record = seqio.read(h)
         self.assertEqual("AB070938", record.id)
 
 
     def test_read_genbank_no_header(self):
         "Test reading a genbank record without header"
-        with open(get_file_path('no_header.gbk'), 'rU') as h:
+        with open(get_file_path('no_header.gbk'), 'r') as h:
             # plain BioPython reading should fail
             self.assertRaises(ValueError, seqio.read, h)
             h.seek(0)
@@ -265,7 +265,7 @@ class TestSeqIORobust(unittest.TestCase):
 
     def test_read_embl_no_header(self):
         "Test reading an embl record without header"
-        with open(get_file_path('no_header.embl'), 'rU') as h:
+        with open(get_file_path('no_header.embl'), 'r') as h:
             # plain BioPython reading should fail
             self.assertRaises(ValueError, seqio.read, h)
             h.seek(0)
@@ -276,7 +276,7 @@ class TestSeqIORobust(unittest.TestCase):
 
     def test_read_fasta_no_header(self):
         "Test reading a fasta record without header"
-        with open(get_file_path('no_header.fasta'), 'rU') as h:
+        with open(get_file_path('no_header.fasta'), 'r') as h:
             # plain BioPython reading should fail
             self.assertRaises(ValueError, seqio.read, h)
             h.seek(0)
