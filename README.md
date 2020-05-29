@@ -9,6 +9,8 @@ that I have created in the course of writing bioinformatics tools.
 If I find that I want to reuse a bit of code in multiple projects, the code
 usually ends up in this helper library
 
+**Note**: Version 0.1.12 is the last version to support Python 2.7, due to our
+dependencies dropping support for Python 2.
 
 Quickstart
 ----------
