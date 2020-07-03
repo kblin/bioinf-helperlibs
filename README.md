@@ -1,7 +1,6 @@
 Helperlibs README
 =================
-
-[![Build Status](http://github.drone.secondarymetabolites.org/api/badges/kblin/bioinf-helperlibs/status.svg)](http://github.drone.secondarymetabolites.org/kblin/bioinf-helperlibs)
+![Run tests](https://github.com/kblin/bioinf-helperlibs/workflows/tests/badge.svg)
 
 This library is a collection of Bioinformatics-related helper functions
 that I have created in the course of writing bioinformatics tools.
@@ -9,7 +8,7 @@ that I have created in the course of writing bioinformatics tools.
 If I find that I want to reuse a bit of code in multiple projects, the code
 usually ends up in this helper library
 
-**Note**: Version 0.1.12 is the last version to support Python 2.7, due to our
+**Note**: Version 0.1.12 was the last version to support Python 2.7, due to our
 dependencies dropping support for Python 2.
 
 Quickstart

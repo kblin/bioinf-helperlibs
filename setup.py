@@ -14,9 +14,10 @@ short_description = "A collection of bioinformatics-related helper functions"
 long_description = open('README.md').read()
 
 tests_require = [
+    'flake8',
     'minimock',
     'pytest',
-    'pytest-cover'
+    'pytest-cover',
 ]
 
 
