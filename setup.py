@@ -34,7 +34,7 @@ setup(
     packages=['helperlibs', 'helperlibs.bio', 'helperlibs.wrappers',
               'helperlibs.tests', 'helperlibs.tests.bio',
               'helperlibs.tests.wrappers'],
-    install_requires=['BioPython>=1.62,<1.77'],
+    install_requires=['BioPython>=1.76'],
     tests_require=tests_require,
     classifiers=[
         "Development Status :: 3 - Alpha",
