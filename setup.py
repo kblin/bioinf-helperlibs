@@ -1,9 +1,11 @@
 import os
+import sys
 from setuptools import setup
 
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 
 version = 'undefined'
 for line in open(os.path.join('helperlibs', '__init__.py'), 'r'):
@@ -21,6 +23,11 @@ tests_require = [
 ]
 
 
+biopython = "Biopython>=1.76"
+if sys.version_info.major == 3 and sys.version_info.minor == 5:
+    biopython += ",<1.77"
+
+
 setup(
     name="helperlibs",
     version=version,
@@ -35,7 +42,7 @@ setup(
     packages=['helperlibs', 'helperlibs.bio', 'helperlibs.wrappers',
               'helperlibs.tests', 'helperlibs.tests.bio',
               'helperlibs.tests.wrappers'],
-    install_requires=['BioPython>=1.76'],
+    install_requires=[biopython],
     tests_require=tests_require,
     classifiers=[
         "Development Status :: 3 - Alpha",
