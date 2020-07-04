@@ -13,7 +13,6 @@ class TestFeatureMatch(unittest.TestCase):
         self.feature_seq = self.seq[3:-3]
         self.match = FeatureMatch(self.feature, self.feature_seq, 1, 3)
 
-
     def test__init(self):
         "Test FeatureMatch object creation"
         # forward strand
@@ -39,7 +38,6 @@ class TestFeatureMatch(unittest.TestCase):
         self.assertEqual(str(m.mrna), str(feature_seq.transcribe().reverse_complement()))
         self.assertEqual(str(m.aas), str(inv_feature.extract(inv_seq).translate(to_stop=True)))
 
-
     def test_get_fasta_header(self):
         "Test FeatureMatch FASTA header creation"
         expected = ">untagged"
@@ -61,7 +59,6 @@ class TestFeatureMatch(unittest.TestCase):
         expected = ">FAKE_0001|Mup1|MUP_0001"
         self.assertEqual(self.match.get_fasta_header(), expected)
 
-
     def test__str_(self):
         "Test FeatureMatch string representation"
         expected = """Feature:
@@ -69,7 +66,7 @@ class TestFeatureMatch(unittest.TestCase):
 	Strand: forward
 	DNA: ATGTACTCCACTATCTGCTGA
 	mRNA: AAAAUGUACUCCACUAUCUGCUGAUUU
-	Protein: MYSTIC"""
+	Protein: MYSTIC"""  # noqa: E101,W191  # the tabs are part of the test string
         self.assertMultiLineEqual(str(self.match), expected)
 
         self.match.feature.qualifiers['gene'] = ["fake"]
@@ -78,7 +75,7 @@ class TestFeatureMatch(unittest.TestCase):
 	Strand: forward
 	DNA: ATGTACTCCACTATCTGCTGA
 	mRNA: AAAAUGUACUCCACUAUCUGCUGAUUU
-	Protein: MYSTIC"""
+	Protein: MYSTIC"""  # noqa: E101,W191  # the tabs are part of the test string
         self.assertMultiLineEqual(str(self.match), expected)
 
         self.match.feature.qualifiers['locus_tag'] = ['FAKE_0001']
@@ -87,7 +84,7 @@ class TestFeatureMatch(unittest.TestCase):
 	Strand: forward
 	DNA: ATGTACTCCACTATCTGCTGA
 	mRNA: AAAAUGUACUCCACUAUCUGCUGAUUU
-	Protein: MYSTIC"""
+	Protein: MYSTIC"""  # noqa: E101,W191  # the tabs are part of the test string
         self.assertMultiLineEqual(str(self.match), expected)
 
         self.match.feature.qualifiers['product'] = ['Mup1']
@@ -97,7 +94,7 @@ class TestFeatureMatch(unittest.TestCase):
 	Product: Mup1
 	DNA: ATGTACTCCACTATCTGCTGA
 	mRNA: AAAAUGUACUCCACUAUCUGCUGAUUU
-	Protein: MYSTIC"""
+	Protein: MYSTIC"""  # noqa: E101,W191  # the tabs are part of the test string
         self.assertMultiLineEqual(str(self.match), expected)
 
         self.match.feature.qualifiers['protein_id'] = ['MUP_0001']
@@ -108,39 +105,33 @@ class TestFeatureMatch(unittest.TestCase):
 	Protein ID: MUP_0001
 	DNA: ATGTACTCCACTATCTGCTGA
 	mRNA: AAAAUGUACUCCACUAUCUGCUGAUUU
-	Protein: MYSTIC"""
+	Protein: MYSTIC"""  # noqa: E101,W191  # the tabs are part of the test string
         self.assertMultiLineEqual(str(self.match), expected)
-
 
     def test_dna_fasta(self):
         "Test FeatureMatch DNA FASTA output"
         expected = "%s\n%s" % (self.match.get_fasta_header(), self.match.dna)
         self.assertMultiLineEqual(self.match.dna_fasta(), expected)
 
-
     def test_long_dna_fasta(self):
         "Test FeatureMatch long DNA FASTA output"
         expected = "%s\n%s" % (self.match.get_fasta_header(), self.match.long_dna)
         self.assertMultiLineEqual(self.match.long_dna_fasta(), expected)
-
 
     def test_mrna_fasta(self):
         "Test FeatureMatch mRNA FASTA output"
         expected = "%s\n%s" % (self.match.get_fasta_header(), self.match.mrna)
         self.assertMultiLineEqual(self.match.mrna_fasta(), expected)
 
-
     def test_protein_fasta(self):
         "Test FeatureMatch protein FASTA output"
         expected = "%s\n%s" % (self.match.get_fasta_header(), self.match.aas)
         self.assertMultiLineEqual(self.match.protein_fasta(), expected)
 
-
     def test_promotor_fasta(self):
         "Test FeatureMatch promotor DNA FASTA output"
         expected = "%s\n%s" % (self.match.get_fasta_header(), self.match.promotor_region)
         self.assertMultiLineEqual(self.match.promotor_fasta(), expected)
-
 
     def test_terminator_fasta(self):
         "Test FeatureMatch terminator DNA FASTA output"
@@ -153,7 +144,6 @@ class TestFindFeatures(unittest.TestCase):
         seq = Seq("CCCAAAATGTACTCCACTATCTGCTGATTTGGG", generic_dna)
         feature = SeqFeature(FeatureLocation(6, 27), type="CDS", strand=1)
         self.record = SeqRecord(seq, features=[feature])
-
 
     def test_find_features(self):
         "Test find_features convenience function"

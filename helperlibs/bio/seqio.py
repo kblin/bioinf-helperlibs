@@ -17,7 +17,6 @@
 
 import gzip
 import io
-import sys
 from os import path
 from Bio import SeqIO
 

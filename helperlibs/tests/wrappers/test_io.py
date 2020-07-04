@@ -1,9 +1,10 @@
 import unittest
-import os
-import tempfile
-import shutil
+import os  # noqa: F401  # used for mocking
+import tempfile  # noqa: F401  # used for mocking
+import shutil  # noqa: F401  # used for mocking
 from minimock import mock, restore, TraceTracker, assert_same_trace
 from helperlibs.wrappers.io import TemporaryPipe, TemporaryFile, TemporaryDirectory
+
 
 class TestTemporaryPipe(unittest.TestCase):
     def test__init(self):
@@ -12,17 +13,14 @@ class TestTemporaryPipe(unittest.TestCase):
         self.assertIsNone(pipe.tempdir)
         self.assertEqual(pipe.pipename, "pipe")
 
-
     def setUp(self):
         self.tt = TraceTracker()
         mock("os.mkfifo", tracker=self.tt)
         mock("tempfile.mkdtemp", tracker=self.tt, returns="/fake/tmp/dir")
         mock("shutil.rmtree", tracker=self.tt)
 
-
     def tearDown(self):
         restore()
-
 
     def test__enter(self):
         "Test TemporaryPipe __enter__() method"
@@ -33,7 +31,6 @@ class TestTemporaryPipe(unittest.TestCase):
         path = pipe.__enter__()
         self.assertEqual(path, expected)
         assert_same_trace(self.tt, trace)
-
 
     def test__exit(self):
         "Test TemporaryPipe __exit__() method"

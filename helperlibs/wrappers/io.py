@@ -4,6 +4,7 @@ import os
 from os import path
 import sys
 
+
 class TemporaryFile(object):
     def __init__(self, suffix='', prefix='tmp', dir=None, text=False):
         self.handle, self.name = tempfile.mkstemp(suffix, prefix, dir, text)
