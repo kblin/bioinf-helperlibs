@@ -1,6 +1,5 @@
 import unittest
 from Bio.Seq import Seq
-from Bio.Alphabet import generic_dna
 from Bio.SeqFeature import SeqFeature, FeatureLocation
 from Bio.SeqRecord import SeqRecord
 from helperlibs.bio.featurematch import FeatureMatch, find_features
@@ -8,8 +7,8 @@ from helperlibs.bio.featurematch import FeatureMatch, find_features
 
 class TestFeatureMatch(unittest.TestCase):
     def setUp(self):
-        self.seq = Seq("CCCAAAATGTACTCCACTATCTGCTGATTTGGG", generic_dna)
-        self.feature = SeqFeature(FeatureLocation(6, 27), type="gene", strand=1)
+        self.seq = Seq("CCCAAAATGTACTCCACTATCTGCTGATTTGGG")
+        self.feature = SeqFeature(FeatureLocation(6, 27, strand=1), type="gene")
         self.feature_seq = self.seq[3:-3]
         self.match = FeatureMatch(self.feature, self.feature_seq, 1, 3)
 
@@ -28,7 +27,7 @@ class TestFeatureMatch(unittest.TestCase):
         # reverse strand
         inv_seq = self.seq.reverse_complement()
         feature_seq = inv_seq[3:-3]
-        inv_feature = SeqFeature(FeatureLocation(6, 27), type="gene", strand=-1)
+        inv_feature = SeqFeature(FeatureLocation(6, 27, strand=-1), type="gene")
         m = FeatureMatch(inv_feature, feature_seq, -1, 3)
         self.assertEqual(m.direction, "reverse")
         self.assertEqual(str(m.dna), str(feature_seq[3:-3].reverse_complement()))
@@ -141,8 +140,8 @@ class TestFeatureMatch(unittest.TestCase):
 
 class TestFindFeatures(unittest.TestCase):
     def setUp(self):
-        seq = Seq("CCCAAAATGTACTCCACTATCTGCTGATTTGGG", generic_dna)
-        feature = SeqFeature(FeatureLocation(6, 27), type="CDS", strand=1)
+        seq = Seq("CCCAAAATGTACTCCACTATCTGCTGATTTGGG")
+        feature = SeqFeature(FeatureLocation(6, 27, strand=1), type="CDS")
         self.record = SeqRecord(seq, features=[feature])
 
     def test_find_features(self):
