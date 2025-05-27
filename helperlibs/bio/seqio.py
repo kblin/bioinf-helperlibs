@@ -85,20 +85,16 @@ def _guess_seqtype_from_file(handle):
 def _unzip_handle(handle):
     """Transparently unzip the file handle"""
     if isinstance(handle, str):
-        handle = _gzip_open_filename(handle)
-    else:
-        handle = _gzip_open_handle(handle)
-    return handle
-
-
-def _gzip_open_filename(handle):
-    """Open a gziped file"""
-    return gzip.open(handle, mode='rt', encoding="UTF-8")
-
-
-def _gzip_open_handle(handle):
-    """"Hide Python 2 vs. 3 differences in gzip.GzipFile()"""
+        return gzip.open(handle, mode='rt', encoding="UTF-8")
     return io.TextIOWrapper(gzip.GzipFile(fileobj=handle), encoding="UTF-8")
+
+
+def _zip_handle(handle):
+    """Transparently zip the file handle"""
+    if isinstance(handle, str):
+        return gzip.open(handle, mode="wt", encoding="UTF-8")
+
+    return io.TextIOWrapper(gzip.GzipFile(fileobj=handle, mode="w"), encoding="UTF-8")
 
 
 def sanity_check_insdcio(handle, id_marker, fake_id_line):
@@ -214,6 +210,15 @@ def read(handle, seqtype=None, robust=False):
     return SeqIO.read(handle, seqtype)
 
 
-def write(*args, **kwargs):
-    '''Just pass through SeqIO.write'''
-    SeqIO.write(*args, **kwargs)
+def write(sequences, handle, seqtype=None):
+    '''Wrap SeqIO.write'''
+    if seqtype is None:
+        seqtype = _get_seqtype_from_ext(handle)
+
+    if seqtype.startswith("gz-"):
+        handle = _zip_handle(handle)
+        seqtype = seqtype[3:]
+
+    ret = SeqIO.write(sequences, handle, seqtype)
+
+    return ret

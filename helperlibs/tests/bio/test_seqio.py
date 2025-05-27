@@ -1,5 +1,8 @@
+from io import BytesIO
 import unittest
 import Bio.SeqIO  # noqa: F401  # used for mocking
+
+from helperlibs.wrappers.io import TemporaryFile
 from helperlibs.bio import seqio
 from helperlibs.tests import get_file_path
 from minimock import TraceTracker, assert_same_trace, mock, restore
@@ -285,3 +288,22 @@ class TestSeqIOZipped(unittest.TestCase):
         fname = get_file_path('melanin.gbk.gz')
         record = seqio.read(fname)
         self.assertEqual("AB070938.1", record.id)
+
+    def test_write_genbank(self):
+        "Test writing a gzipped GenBank file"
+        record = seqio.read(get_file_path("melanin.gbk"))
+        handle = BytesIO()
+        handle.name = "test.gbk.gz"
+        seqio.write([record], handle)
+        handle.seek(0)
+        magic = handle.read(2)
+        assert magic == b"\x1f\x8b", f"wrong file magic {magic}"
+
+    def test_write_genbank_path(self):
+        "Test writing a gzipped GenBank file specified by path"
+        record = seqio.read(get_file_path("melanin.gbk"))
+        with TemporaryFile(suffix=".gbk.gz") as tmpfile:
+            seqio.write([record], tmpfile.name)
+            with open(tmpfile.name, "rb") as fd:
+                magic = fd.read(2)
+                assert magic == b"\x1f\x8b", f"wrong file magic {magic}"
